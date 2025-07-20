@@ -30,8 +30,8 @@ const LoadingScreen = () => {
       >
         <motion.div
           animate={{ 
-            scale: [1, 1.2, 1],
-            rotate: [0, 360]
+            scale: [1, 1.1, 1],
+            y: [0, -10, 0]
           }}
           transition={{ 
             duration: 2,
@@ -39,18 +39,24 @@ const LoadingScreen = () => {
             ease: 'easeInOut'
           }}
           style={{
-            background: 'var(--white)',
-            borderRadius: '50%',
-            width: '80px',
-            height: '80px',
+            width: '120px',
+            height: '120px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             marginBottom: '2rem',
-            boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)'
+            filter: 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.1))'
           }}
         >
-          <Heart size={36} color="var(--primary)" />
+          <img 
+            src="/logo.svg" 
+            alt="PainEase Logo" 
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain'
+            }}
+          />
         </motion.div>
 
         <motion.h1
