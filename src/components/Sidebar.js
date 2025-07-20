@@ -22,7 +22,7 @@ const Sidebar = ({ isOpen, onToggle, currentUser }) => {
     { path: '/pain-tracker', label: 'Pain Tracker', icon: Activity, color: '#ef4444' },
     { path: '/exercises', label: 'Exercises', icon: Dumbbell, color: '#10b981' },
     { path: '/meditation', label: 'Meditation', icon: Brain, color: '#8b5cf6' },
-    { path: '/music', label: 'Music Therapy', icon: Music, color: '#f472b6' },
+    { path: '/music-therapy', label: 'Music Therapy', icon: Music, color: '#f472b6' },
     { path: '/education', label: 'Education', icon: BookOpen, color: '#06d6a0' },
     { path: '/profile', label: 'Profile', icon: User, color: '#f59e0b' }
   ];
@@ -120,7 +120,7 @@ const Sidebar = ({ isOpen, onToggle, currentUser }) => {
                 fontWeight: '600',
                 fontSize: '1.2rem'
               }}>
-                {currentUser.name.charAt(0)}
+                {currentUser?.name?.charAt(0) || 'U'}
               </div>
               <div>
                 <h3 style={{
@@ -129,7 +129,7 @@ const Sidebar = ({ isOpen, onToggle, currentUser }) => {
                   color: 'var(--gray-800)',
                   marginBottom: '0.25rem'
                 }}>
-                  {currentUser.name}
+                  {currentUser?.name || 'User'}
                 </h3>
                 <p style={{
                   fontSize: '0.875rem',

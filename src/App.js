@@ -78,7 +78,7 @@ function App() {
                 transition={{ duration: 0.5 }}
                 style={{ display: 'flex', height: '100vh' }}
               >
-                <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+                <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} currentUser={currentUser} />
                 
                 <motion.main 
                   className="main-content"
