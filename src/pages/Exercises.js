@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Play, 
@@ -23,6 +24,7 @@ import ExerciseSession, { predefinedSessions } from '../utils/ExerciseSession';
 import toast from 'react-hot-toast';
 
 const Exercises = () => {
+  const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedExercise, setSelectedExercise] = useState(null);
   const [currentSession, setCurrentSession] = useState(null);
@@ -73,9 +75,12 @@ const Exercises = () => {
   }, []);
 
   const startQuickSession = (sessionKey) => {
-    const session = predefinedSessions[sessionKey];
+    const session = predefinedSessions.find(s => s.id === sessionKey);
     if (session) {
-      ExerciseSession.startSession(session);
+      toast.success(`Starting ${session.name}`, { icon: '🏃‍♂️' });
+      navigate(`/exercise-session/${session.id}`);
+    } else {
+      toast.error('Session not found');
     }
   };
 

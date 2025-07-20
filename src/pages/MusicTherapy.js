@@ -231,11 +231,17 @@ const MusicTherapy = () => {
   };
 
   const pauseSession = () => {
-    setIsPlaying(false);
-    // Note: Web Audio API doesn't support pause/resume easily
-    // For now, we'll stop and restart
-    toast.info('Stopping session...', { icon: '⏸️' });
-    stopSession();
+    if (currentSession?.sessionId) {
+      if (isPlaying) {
+        AudioEngine.pauseSession(currentSession.sessionId);
+        setIsPlaying(false);
+        toast.success('Session paused', { icon: '⏸️' });
+      } else {
+        AudioEngine.resumeSession(currentSession.sessionId);
+        setIsPlaying(true);
+        toast.success('Session resumed', { icon: '▶️' });
+      }
+    }
   };
 
   const formatTime = (seconds) => {

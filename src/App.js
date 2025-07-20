@@ -8,6 +8,7 @@ import Sidebar from './components/Sidebar';
 import Dashboard from './pages/Dashboard';
 import PainTracker from './pages/PainTracker';
 import Exercises from './pages/Exercises';
+import ExerciseSession from './pages/ExerciseSession';
 import Meditation from './pages/Meditation';
 import MusicTherapy from './pages/MusicTherapy';
 import Education from './pages/Education';
@@ -65,64 +66,46 @@ function App() {
           }}
         />
         
-        <div style={{ display: 'flex', minHeight: '100vh' }}>
-          <Sidebar 
-            isOpen={sidebarOpen} 
-            onToggle={() => setSidebarOpen(!sidebarOpen)}
-            currentUser={currentUser}
-          />
-          
-          <motion.main 
-            className="main-content"
-            style={{
-              flex: 1,
-              marginLeft: sidebarOpen ? '280px' : '80px',
-              transition: 'margin-left 0.3s ease',
-              padding: '0',
-              background: 'var(--gray-50)',
-              minHeight: '100vh'
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route 
-                  path="/" 
-                  element={
-                    <Dashboard 
-                      painData={painData}
-                      currentUser={currentUser}
-                    />
-                  } 
-                />
-                <Route 
-                  path="/pain-tracker" 
-                  element={
-                    <PainTracker 
-                      painData={painData}
-                      onAddEntry={addPainEntry}
-                      onUpdateEntry={updatePainEntry}
-                    />
-                  } 
-                />
-                <Route path="/exercises" element={<Exercises />} />
-                <Route path="/meditation" element={<Meditation />} />
-                <Route path="/music" element={<MusicTherapy />} />
-                <Route path="/education" element={<Education />} />
-                <Route 
-                  path="/profile" 
-                  element={
-                    <Profile 
-                      currentUser={currentUser}
-                      onUpdateUser={setCurrentUser}
-                    />
-                  } 
-                />
-              </Routes>
-            </AnimatePresence>
-          </motion.main>
+        <div className="app-container">
+          <AnimatePresence mode="wait">
+            {isLoading ? (
+              <LoadingScreen key="loading" />
+            ) : (
+              <motion.div 
+                key="app"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+                style={{ display: 'flex', height: '100vh' }}
+              >
+                <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(!sidebarOpen)} />
+                
+                <motion.main 
+                  className="main-content"
+                  animate={{ 
+                    marginLeft: sidebarOpen ? '280px' : '80px',
+                    width: sidebarOpen ? 'calc(100% - 280px)' : 'calc(100% - 80px)'
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  style={{
+                    overflowY: 'auto',
+                    backgroundColor: '#f8fafc'
+                  }}
+                >
+                  <Routes>
+                    <Route path="/" element={<Dashboard currentUser={currentUser} />} />
+                    <Route path="/pain-tracker" element={<PainTracker />} />
+                    <Route path="/exercises" element={<Exercises />} />
+                    <Route path="/exercise-session/:sessionId" element={<ExerciseSession />} />
+                    <Route path="/meditation" element={<Meditation />} />
+                    <Route path="/music-therapy" element={<MusicTherapy />} />
+                    <Route path="/education" element={<Education />} />
+                    <Route path="/profile" element={<Profile currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
+                  </Routes>
+                </motion.main>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </Router>

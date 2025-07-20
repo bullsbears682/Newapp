@@ -309,6 +309,60 @@ class AudioEngine {
     return sessionId;
   }
 
+  pauseSession(sessionId) {
+    const session = this.currentSessions.get(sessionId);
+    if (!session || session.isPaused) return;
+
+    try {
+      const fadeTime = 0.5; // Quick fade for pause
+      const now = this.audioContext.currentTime;
+
+      // Store current gain values before pausing
+      if (session.leftGain) {
+        session.originalLeftGain = session.leftGain.gain.value;
+        session.originalRightGain = session.rightGain.gain.value;
+        session.leftGain.gain.exponentialRampToValueAtTime(0.001, now + fadeTime);
+        session.rightGain.gain.exponentialRampToValueAtTime(0.001, now + fadeTime);
+      }
+      if (session.gainNode) {
+        session.originalGain = session.gainNode.gain.value;
+        session.gainNode.gain.exponentialRampToValueAtTime(0.001, now + fadeTime);
+      }
+
+      session.isPaused = true;
+      session.pausedAt = now;
+    } catch (error) {
+      console.error('Error pausing audio session:', error);
+    }
+  }
+
+  resumeSession(sessionId) {
+    const session = this.currentSessions.get(sessionId);
+    if (!session || !session.isPaused) return;
+
+    try {
+      const fadeTime = 0.5; // Quick fade for resume
+      const now = this.audioContext.currentTime;
+
+      // Restore original gain values
+      if (session.leftGain && session.originalLeftGain !== undefined) {
+        session.leftGain.gain.exponentialRampToValueAtTime(session.originalLeftGain, now + fadeTime);
+        session.rightGain.gain.exponentialRampToValueAtTime(session.originalRightGain, now + fadeTime);
+      }
+      if (session.gainNode && session.originalGain !== undefined) {
+        session.gainNode.gain.exponentialRampToValueAtTime(session.originalGain, now + fadeTime);
+      }
+
+      session.isPaused = false;
+      delete session.pausedAt;
+      delete session.originalLeftGain;
+      delete session.originalRightGain;
+      delete session.originalGain;
+    } catch (error) {
+      console.error('Error resuming audio session:', error);
+    }
+  }
+
   stopSession(sessionId) {
     const session = this.currentSessions.get(sessionId);
     if (!session) return;
@@ -347,6 +401,36 @@ class AudioEngine {
     for (const sessionId of this.currentSessions.keys()) {
       this.stopSession(sessionId);
     }
+  }
+
+  isSessionPaused(sessionId) {
+    const session = this.currentSessions.get(sessionId);
+    return session ? session.isPaused : false;
+  }
+
+  getSessionInfo(sessionId) {
+    const session = this.currentSessions.get(sessionId);
+    if (!session) return null;
+    
+    return {
+      id: sessionId,
+      type: session.type,
+      isPaused: session.isPaused || false,
+      isActive: true
+    };
+  }
+
+  getAllActiveSessions() {
+    const sessions = [];
+    for (const [id, session] of this.currentSessions.entries()) {
+      sessions.push({
+        id,
+        type: session.type,
+        isPaused: session.isPaused || false,
+        isActive: true
+      });
+    }
+    return sessions;
   }
 
   setMasterVolume(volume) {
