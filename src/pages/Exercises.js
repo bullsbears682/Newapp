@@ -38,6 +38,11 @@ const Exercises = () => {
   }, []);
 
   const startQuickSession = (sessionKey) => {
+    console.log('predefinedSessions:', predefinedSessions);
+    console.log('sessionKey:', sessionKey);
+    console.log('typeof predefinedSessions:', typeof predefinedSessions);
+    console.log('Array.isArray(predefinedSessions):', Array.isArray(predefinedSessions));
+    
     const session = predefinedSessions[sessionKey];
     if (session) {
       toast.success(`Starting ${session.name}`, { icon: '🏃‍♂️' });
