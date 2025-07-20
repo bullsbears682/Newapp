@@ -6,14 +6,9 @@ node_modules/
 # Testing
 /coverage
 
-# Production
+# Production builds
 /build
-build/
-
-# Cache files
-node_modules/.cache/
-.cache/
-*.cache
+/dist
 
 # Environment variables
 .env
@@ -21,6 +16,15 @@ node_modules/.cache/
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Cache files
+.cache/
+*.cache
+**/.cache/
+**/cache/
+node_modules/.cache/
+.npm/
+.eslintcache
 
 # Logs
 npm-debug.log*
@@ -34,11 +38,51 @@ pids
 *.seed
 *.pid.lock
 
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+
+# parcel-bundler cache (https://parceljs.org/)
+.parcel-cache
+
+# next.js build output
+.next
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
 # IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
 
 # OS generated files
 .DS_Store
@@ -49,11 +93,10 @@ pids
 ehthumbs.db
 Thumbs.db
 
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Ignore all large files
+# Large pack files
 *.pack
+
+# Build artifacts
+/public/static/js/*.js
+/public/static/css/*.css
+/public/static/media/*
