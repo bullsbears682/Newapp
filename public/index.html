@@ -5,16 +5,15 @@
     <link rel="icon" href="%PUBLIC_URL%/logo.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#667eea" />
-    <meta name="description" content="PainEase - Advanced Pain Management Application with Real Audio Therapy & Interactive Exercises" />
+    <meta name="description" content="PainEase - Advanced Pain Management and Wellness Application" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo.svg" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>PainEase - Pain Management & Wellness</title>
     
-    <!-- Google Fonts -->
+    <!-- Preload critical fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
-    <title>PainEase - Pain Management App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
       * {
@@ -24,9 +23,7 @@
       }
       
       body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-          'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-          sans-serif;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -37,20 +34,72 @@
         min-height: 100vh;
       }
       
-      .loading {
+      /* Loading screen styles */
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         align-items: center;
-        height: 100vh;
+        justify-content: center;
+        z-index: 9999;
+      }
+      
+      .loading-logo {
+        width: 120px;
+        height: 120px;
+        animation: pulse 2s ease-in-out infinite;
+        margin-bottom: 2rem;
+      }
+      
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.05); opacity: 0.8; }
+      }
+      
+      .loading-text {
         color: white;
-        font-size: 18px;
+        font-size: 1.5rem;
+        font-weight: 300;
+        letter-spacing: 2px;
+        animation: fadeInOut 2s ease-in-out infinite;
+      }
+      
+      @keyframes fadeInOut {
+        0%, 100% { opacity: 0.7; }
+        50% { opacity: 1; }
       }
     </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
-      <div class="loading">Loading PainEase...</div>
+      <!-- Loading screen that will be replaced by React -->
+      <div class="loading-screen">
+        <svg class="loading-logo" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="backgroundGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+              <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#f093fb;stop-opacity:1" />
+            </linearGradient>
+            <linearGradient id="letterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#f8fafc;stop-opacity:0.9" />
+            </linearGradient>
+          </defs>
+          <circle cx="256" cy="256" r="240" fill="url(#backgroundGradient)"/>
+          <g transform="translate(256, 256)">
+            <path d="M -60 -80 L -60 80 L -40 80 L -40 10 L 20 10 Q 50 10 65 -5 Q 80 -20 80 -50 Q 80 -80 65 -95 Q 50 -110 20 -110 Z M -40 -90 L 20 -90 Q 35 -90 42.5 -82.5 Q 50 -75 50 -60 Q 50 -45 42.5 -37.5 Q 35 -30 20 -30 L -40 -30 Z" 
+                  fill="url(#letterGradient)"/>
+          </g>
+        </svg>
+        <div class="loading-text">PainEase</div>
+      </div>
     </div>
   </body>
 </html>

@@ -1,0 +1,29 @@
+{
+  "short_name": "PainEase",
+  "name": "PainEase - Pain Management & Wellness",
+  "description": "Advanced pain management application with music therapy, guided exercises, and wellness tracking.",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    },
+    {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#667eea",
+  "background_color": "#667eea",
+  "orientation": "portrait-primary",
+  "categories": ["health", "medical", "wellness", "lifestyle"],
+  "lang": "en-US"
+}
