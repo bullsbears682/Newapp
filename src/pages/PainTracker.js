@@ -5,8 +5,12 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { format } from 'date-fns';
 import toast from 'react-hot-toast';
 
-const PainTracker = ({ painData, onAddEntry }) => {
+const PainTracker = ({ painData: externalPainData, onAddEntry: externalOnAddEntry }) => {
   const [showForm, setShowForm] = useState(false);
+  const [localPainData, setLocalPainData] = useState(() => {
+    const saved = localStorage.getItem('painease_pain_data');
+    return saved ? JSON.parse(saved) : [];
+  });
   const [formData, setFormData] = useState({
     painLevel: 5,
     location: 'neck',
@@ -34,6 +38,15 @@ const PainTracker = ({ painData, onAddEntry }) => {
   const locations = ['neck', 'back', 'head', 'joints', 'chest', 'abdomen', 'legs', 'arms'];
   const triggers = ['stress', 'weather', 'exercise', 'work', 'sleep', 'diet', 'posture', 'medication'];
   const activities = ['walking', 'stretching', 'meditation', 'rest', 'work', 'exercise', 'therapy'];
+
+  // Use external data if provided, otherwise use local data
+  const painData = externalPainData || localPainData;
+  const onAddEntry = externalOnAddEntry || ((entry) => {
+    const newEntry = { ...entry, id: Date.now() };
+    const updatedData = [newEntry, ...localPainData];
+    setLocalPainData(updatedData);
+    localStorage.setItem('painease_pain_data', JSON.stringify(updatedData));
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
