@@ -20,58 +20,21 @@ import {
   Volume2
 } from 'lucide-react';
 import { exerciseCategories, quickExercises } from '../data/exerciseData';
-import ExerciseSession, { predefinedSessions } from '../utils/ExerciseSession';
+import { predefinedSessions } from '../utils/ExerciseSession';
 import toast from 'react-hot-toast';
 
 const Exercises = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedExercise, setSelectedExercise] = useState(null);
-  const [currentSession, setCurrentSession] = useState(null);
-  const [sessionStatus, setSessionStatus] = useState(null);
-  const [currentStep, setCurrentStep] = useState(null);
-  const [showSessionModal, setShowSessionModal] = useState(false);
   const [completedSessions, setCompletedSessions] = useState([]);
 
+  // Load completed sessions from localStorage
   useEffect(() => {
-    // Set up ExerciseSession event listeners
-    const handleSessionStarted = (session) => {
-      setCurrentSession(session);
-      setShowSessionModal(true);
-      toast.success(`Started ${session.name}`, { icon: '🏃‍♂️' });
-    };
-
-    const handleExerciseStep = (stepData) => {
-      setCurrentStep(stepData);
-    };
-
-    const handleSessionCompleted = (data) => {
-      setCompletedSessions(prev => [...prev, data]);
-      setCurrentSession(null);
-      setCurrentStep(null);
-      setShowSessionModal(false);
-      
-      toast.success(`Session completed! ${data.achievement.title}`, {
-        icon: data.achievement.icon,
-        duration: 5000
-      });
-    };
-
-    const handleSessionStopped = () => {
-      setCurrentSession(null);
-      setCurrentStep(null);
-      setShowSessionModal(false);
-      toast.info('Session stopped', { icon: '⏹️' });
-    };
-
-    ExerciseSession.on('sessionStarted', handleSessionStarted);
-    ExerciseSession.on('exerciseStep', handleExerciseStep);
-    ExerciseSession.on('sessionCompleted', handleSessionCompleted);
-    ExerciseSession.on('sessionStopped', handleSessionStopped);
-
-    return () => {
-      ExerciseSession.removeAllListeners();
-    };
+    const saved = localStorage.getItem('painease_completed_sessions');
+    if (saved) {
+      setCompletedSessions(JSON.parse(saved));
+    }
   }, []);
 
   const startQuickSession = (sessionKey) => {
@@ -85,17 +48,7 @@ const Exercises = () => {
     }
   };
 
-  const pauseSession = () => {
-    ExerciseSession.pauseSession();
-  };
 
-  const resumeSession = () => {
-    ExerciseSession.resumeSession();
-  };
-
-  const stopSession = () => {
-    ExerciseSession.stopSession();
-  };
 
   const categories = Object.keys(exerciseCategories);
 
@@ -174,7 +127,7 @@ const Exercises = () => {
                 whileTap={{ scale: 0.95 }}
                 className="btn btn-primary session-start-btn"
                 onClick={() => startQuickSession(key)}
-                disabled={currentSession !== null}
+
               >
                 <Play size={20} />
                 Start Session
