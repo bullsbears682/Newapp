@@ -75,10 +75,11 @@ const Exercises = () => {
   }, []);
 
   const startQuickSession = (sessionKey) => {
-    const session = predefinedSessions.find(s => s.id === sessionKey);
+    const session = predefinedSessions[sessionKey];
     if (session) {
       toast.success(`Starting ${session.name}`, { icon: '🏃‍♂️' });
-      navigate(`/exercise-session/${session.id}`);
+      // Use the sessionKey instead of session.id since that's how we'll find it
+      navigate(`/exercise-session/${sessionKey}`);
     } else {
       toast.error('Session not found');
     }

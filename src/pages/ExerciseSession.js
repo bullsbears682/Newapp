@@ -39,9 +39,9 @@ const ExerciseSession = () => {
   const [volume, setVolume] = useState(0.6);
   const [selectedMusic, setSelectedMusic] = useState('528Hz'); // DNA repair frequency
   
-  // Find the session by ID
+  // Find the session by key
   useEffect(() => {
-    const foundSession = predefinedSessions.find(s => s.id === sessionId);
+    const foundSession = predefinedSessions[sessionId];
     if (foundSession) {
       setSession(foundSession);
     } else {
@@ -105,7 +105,7 @@ const ExerciseSession = () => {
     exerciseSession.on('sessionResumed', handleSessionResumed);
 
     // Auto-start the session
-    exerciseSession.startSession(session.id);
+    exerciseSession.startSession(sessionId);
 
     return () => {
       exerciseSession.removeAllListeners();
